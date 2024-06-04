@@ -18,9 +18,17 @@ export function LinkedList (headNode) {
             let formerHeadPlaceholder = this.head;
             this.head = Node(value, formerHeadPlaceholder);
         },
-        size : function size (node = this.head, counter=1) {
+        size : function size (node = this.head, counter=0) {
             if (node.next == null) {
-                return counter
+                if (node == this.head && node.value != null){
+                    return 1
+                }
+                else if (this.head.value == null || this.head.key == null) {
+                    return 0
+                }
+                else {
+                    return counter+=1
+                }
             }
             else {
                 counter+=1;
@@ -56,10 +64,23 @@ export function LinkedList (headNode) {
             }
             return result
         },
-        find : function find(value) {
+        //refactor to return the value of a given key
+        find : function find(key) {
             let result;
             for (let i = 0; i<this.size(); i++) {
-                if (value == this.at(i).value) {
+                if (key == this.at(i).key) {
+                    return result = this.at(i).value
+                }
+                else {
+                    result = null
+                }
+            }
+            return result
+        },
+        getIndex : function getIndex(key) {
+            let result;
+            for (let i = 0; i<this.size(); i++) {
+                if (key == this.at(i).key) {
                     return i
                 }
                 else {
@@ -96,19 +117,28 @@ export function LinkedList (headNode) {
         },
         removeAt : function removeAt(index) {
             for (let i = 0; i<this.size(); i++) {
-                if (i == index) {
-                    if (i == 0) {
-                        this.head = this.head.next
+                if (0 == index) {
+                        if (this.head.next != null) {
+                            this.head = this.head.next;
+                            return
+                            
+                        }
+                        else {
+                            this.head.value = null;
+                            this.head.next = null;
+                            this.head.key = undefined;
+                            return
+                        }
                     }
                     else {
-                        console.log(this.at(index-1))
                         this.at(index-1).next = this.at(index).next
+                        return
                     }
                 }
-            }
         },
     }
 };
+
 
 export function Node (key, value = null, next=null) {
     return {
